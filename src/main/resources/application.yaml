@@ -16,3 +16,7 @@ spring:
       hibernate:
         dialect:org.hibernate.dialect.PostgreSQLDialect
         format_sql:true
+
+
+jwt:
+  secretkey: bbvyuhuf7ry73ye83ue8u8eu9wue8ye8wububihd8y824ffedw3r532

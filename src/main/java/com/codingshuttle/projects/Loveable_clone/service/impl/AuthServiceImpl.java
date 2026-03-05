@@ -7,11 +7,15 @@ import com.codingshuttle.projects.Loveable_clone.entity.User;
 import com.codingshuttle.projects.Loveable_clone.error.BadRequestException;
 import com.codingshuttle.projects.Loveable_clone.mapper.UserMapper;
 import com.codingshuttle.projects.Loveable_clone.repository.UserRepository;
+import com.codingshuttle.projects.Loveable_clone.security.AuthUtil;
 import com.codingshuttle.projects.Loveable_clone.service.AuthService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,8 @@ public class AuthServiceImpl implements AuthService {
     UserRepository userRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    AuthUtil authUtil;
+    AuthenticationManager authenticationManager;
 
     @Override
     public AuthResponse signup(SignupRequest request) {
@@ -36,11 +42,20 @@ public class AuthServiceImpl implements AuthService {
        user.setPassword(passwordEncoder.encode(request.password()));
        user = userRepository.save(user);
 
-        return new AuthResponse("dummy" , userMapper.toUserProfileResponse(user));
+       String token = authUtil.generateAccessToken(user);
+
+        return new AuthResponse(token, userMapper.toUserProfileResponse(user));
     }
 
     @Override
     public AuthResponse login(LoginRequest request) {
-        return null;
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.username() , request.password()));
+
+        User user = (User) authentication.getPrincipal();
+
+        String token = authUtil.generateAccessToken(user);
+        return new AuthResponse(token, userMapper.toUserProfileResponse(user));
+
     }
 }
