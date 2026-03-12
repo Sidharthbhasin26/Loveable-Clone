@@ -32,7 +32,7 @@ public class AuthUtil {
     public String generateAccessToken(User user) {
         return Jwts.builder()
                 .claim("username", user.getUsername())
-                .claim("userId", user.getId())
+                .claim("userId", user.getId().toString())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(getSecretKey())
