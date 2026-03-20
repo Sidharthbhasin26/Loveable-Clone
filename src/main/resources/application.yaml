@@ -22,6 +22,9 @@ jwt:
   secretkey: bbvyuhuf7ry73ye83ue8u8eu9wue8ye8wububihd8y824ffedw3r532
 
 stripe:
-  secret: ${STRIPE_SECRET_KEY}
+  api:
+    secret: ${STRIPE_SECRET_KEY}
+  webhook:
+    secret: whsec_8f363280fab6582f612e4668133f48514cad37b6d7dbabb349e3e493d561aad3
 
 client.url: http://localhost:8080
