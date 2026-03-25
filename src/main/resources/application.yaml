@@ -25,6 +25,6 @@ stripe:
   api:
     secret: ${STRIPE_SECRET_KEY}
   webhook:
-    secret: whsec_8f363280fab6582f612e4668133f48514cad37b6d7dbabb349e3e493d561aad3
+    secret: ${STRIPE_WEBHOOK_KEY}
 
 client.url: http://localhost:8080
